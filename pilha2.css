@@ -1,0 +1,29 @@
+body {
+    
+}
+.container {
+    
+    width: auto;
+    height: 50vh;
+    padding: 10px;
+
+}
+
+conteudo {
+    position:absolute; 
+    left:12px;
+    top:58px;
+    width:715px;
+    height:211px;
+    color: #999;
+}
+
+.tabela {
+    color: white ;
+    background-color: #000;
+
+}
+
+.tabela td {
+    background-color: green;
+}
