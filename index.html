@@ -15,18 +15,13 @@
       <form name="formPilha" method="post" action="">
         <input type="hidden" name="pilha" />
         <input type="text" name="elemento" id="elemento" />
-        <input
-          type="button"
-          name="Inserir"
-          value="Adicionar na pilha"
-          onClick="minhaPilha.pushElemento(document.getElementById('elemento').value);"
-        />
-        <input
-          type="button"
-          name="Retirar"
-          value="Tirar da pilha"
-          onClick="minhaPilha.popElemento();"
-        />
+        <div style="flex-direction: row; display: flex; justify-content: space-evenly; width: 10rem;">
+            <button type="button" id="adicionar">
+                <img src="Caixa.jpg" alt="Adicionar na pilha">
+            </button>
+            <button type="button" id="retirar">
+                <img src="tartaruga.png" alt="Tirar da pilha">
+            </button></div>
       </form>
       <div id="conteudo" class="conteudo"></div>
     </main>

@@ -1,5 +1,3 @@
-const carlaoTexto = document.getElementById("carlaoTexto");
-
 class Pilha {
   constructor() {
     this.elementos = [];
@@ -8,20 +6,20 @@ class Pilha {
 
   estouroPilha(tipo) {
     if (tipo === "push" && this.qtdElementos === 10) {
-      this.ativaAnimacao();
-      carlaoTexto.innerHTML = "A pilha está cheia!!";
+      this.ativaAnimacao("A pilha está cheia!!!");
       return false;
     }
     if (tipo === "pop" && this.qtdElementos === 0) {
-      this.ativaAnimacao();
-      carlaoTexto.innerHTML = "A pilha está vazia!!";
+      this.ativaAnimacao("A pilha está vazia!!!");
       return false;
     }
     return true;
   }
 
-  ativaAnimacao() {
+  ativaAnimacao(mensagem) {
     const carlaoArea = document.querySelector(".carlaoAlerta");
+    const carlaoTexto = document.getElementById("carlaoTexto");
+    carlaoTexto.innerHTML = mensagem;
     carlaoArea.style.display = "flex";
     setTimeout(() => {
       carlaoArea.style.animation = "fadeOut 1s";
@@ -30,36 +28,33 @@ class Pilha {
   }
 
   verificaPontoVirgula(elemento) {
-    var pos = elemento.value;
     if (elemento.trim() === "") {
-      this.ativaAnimacao();
-        carlaoTexto.innerHTML = "O valor não pode ser nulo!";
-        return false;
+      this.ativaAnimacao("O valor não pode ser vazio!");
+      return false;
     }
-  
-    if (pos != -1) {
-      if (elemento.includes(";")) {
-        this.ativaAnimacao();
-        carlaoTexto.innerHTML = "O valor possui ;";
-        return false;
-      } else if (elemento.includes("~")) {
-        this.ativaAnimacao();
-        carlaoTexto.innerHTML = "O valor possui ~";
-        return false;
-      } else if (elemento.includes("^")) {
-        this.ativaAnimacao();
-        carlaoTexto.innerHTML = "O valor possui ^";
-        return false;
-      } else if (elemento.includes("#")) {
-        this.ativaAnimacao();
-        carlaoTexto.innerHTML = "O valor possui #";
-        return false;
-      } else if (elemento.includes("$")) {
-        this.ativaAnimacao();
-        carlaoTexto.innerHTML = "O valor possui $";
-        return false;
+
+    for (const char of elemento) {
+      switch (char) {
+        case ";":
+          this.ativaAnimacao("O valor possui ;");
+          return false;
+        case "~":
+          this.ativaAnimacao("O valor possui ~");
+          return false;
+        case "^":
+          this.ativaAnimacao("O valor possui ^");
+          return false;
+        case "#":
+          this.ativaAnimacao("O valor possui #");
+          return false;
+        case "$":
+          this.ativaAnimacao("O valor possui $");
+          return false;
+        default:
+          break;
       }
-    } 
+    }
+
     return true;
   }
 
@@ -84,11 +79,11 @@ class Pilha {
       document.body.appendChild(divElementoRemovido);
 
       const alturaInicial = window.scrollY;
-      const alturaFinal = alturaInicial + 100; 
+      const alturaFinal = alturaInicial + 100;
       let posicaoAtual = alturaInicial;
 
       const animacaoQueda = () => {
-        posicaoAtual += 2; 
+        posicaoAtual += 2;
         if (posicaoAtual < alturaFinal) {
           divElementoRemovido.style.transform = `translateY(${posicaoAtual}px)`;
           requestAnimationFrame(animacaoQueda);
@@ -107,33 +102,41 @@ class Pilha {
     let retorno = `A quantidade de elementos da pilha é: ${this.qtdElementos}<br><table width='500' border='0' class='tabela'>
       <tr style='border-radius: 10px;'>
         <td width='104'>Posi&ccedil;&atilde;o</td>`;
-    
+
     for (let i = 1; i <= 10; i++) {
       retorno += `<td width='35'><div align='center'><strong>${i}</strong></div></td>`;
     }
-    
+
     retorno += `</tr><tr><td>Elemento</td>`;
 
     if (str !== "") {
       const pilha = str.split(";");
-      let posicao;  
+      let posicao = 0; // Declara e inicializa a variável posicao aqui
       if (this.qtdElementos > 0) {
         for (let index = 0; index < pilha.length; index++) {
           posicao = index + 1;
           retorno += `<td><div align='center'>${pilha[index]}</div></td>`;
         }
         while (posicao < 10) {
-          retorno += `<td><div align='center'></div></td>`;
           posicao += 1;
+          retorno += `<td><div align='center'></div></td>`;
         }
       }
     }
-    
+
     retorno += `</tr></table>`;
     document.getElementById("conteudo").innerHTML = retorno;
   }
 }
 
-
 const minhaPilha = new Pilha();
 minhaPilha.mostrarPilha();
+
+document.getElementById("retirar").addEventListener("click", () => {
+  minhaPilha.popElemento();
+});
+
+document.getElementById("adicionar").addEventListener("click", () => {
+  const elemento = document.getElementById("elemento").value;
+  minhaPilha.pushElemento(elemento);
+});
