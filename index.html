@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Estrutura de Dados - Pilha em JavaScript</title>
-    <script src="pilha2.js" defer=""></script>
-	<link rel="stylesheet" href="./pilha2.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./pilha2.css" />
+  </head>
+  <body>
     <header>
-        <h1>Pilha Vittor</h1>
+      <h1>Pilha Vittor</h1>
     </header>
-   
+
     <main class="container">
-        <form name="formPilha" method="post" action="">
-
-            <input type="hidden" name="pilha">
-    
-            <input type="text" name="elemento" id="elemento">
-    
-            <input type="button" name="Inserir" value="Adicionar na pilha"
-                onClick="pushElemento(document.getElementById('elemento').value);">
-            <input type="button" name="Retirar" 
-                value="Tirar da pilha" onClick="popElemento();">
-                
-        </form>
-
-        <div id="conteudo" class="conteudo">
-		</div>
+      <form name="formPilha" method="post" action="">
+        <input type="hidden" name="pilha" />
+        <input type="text" name="elemento" id="elemento" />
+        <input
+          type="button"
+          name="Inserir"
+          value="Adicionar na pilha"
+          onClick="minhaPilha.pushElemento(document.getElementById('elemento').value);"
+        />
+        <input
+          type="button"
+          name="Retirar"
+          value="Tirar da pilha"
+          onClick="minhaPilha.popElemento();"
+        />
+      </form>
+      <div id="conteudo" class="conteudo"></div>
     </main>
-
-
     <div class="carlaoAlerta">
-        <p id="carlaoTexto"></p>
-        <img style="border: 2px solid #000" src="carlao.JPG" alt="">
+      <p id="carlaoTexto"></p>
+      <img style="border: 2px solid #000" src="carlao.JPG" alt="" />
     </div>
-</body>
+    <script defer src="pilha2.js"></script>
+    <script>
+    </script>
+  </body>
 </html>

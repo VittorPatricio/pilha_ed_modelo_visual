@@ -1,159 +1,139 @@
-function setarCampo() {
-  formPilha.elemento.value = "";
-  formPilha.elemento.focus();
-}
+const carlaoTexto = document.getElementById("carlaoTexto");
 
-var qtdElementos = 0;
-
-function estouro_pilha(qtd, tipo) {
-  if (tipo == "push" && qtd == 10) {
-    ativaAnimacao();
-    const carlaoTexto = document.getElementById("carlaoTexto");
-    carlaoTexto.innerHTML = "A pilha está cheia!!!";
-    return false;
+class Pilha {
+  constructor() {
+    this.elementos = [];
+    this.qtdElementos = 0;
   }
-  if (tipo == "pop" && qtd == 0) {
-    ativaAnimacao();
-    const carlaoTexto = document.getElementById("carlaoTexto");
-    carlaoTexto.innerHTML = "A pilha está vazia!!!";
-    return false;
-  }
-  return true;
-}
 
-function ativaAnimacao() {
-  const carlaoArea = document.querySelector(".carlaoAlerta");
-  carlaoArea.style.display = "flex";
-  setTimeout(() => {
-    carlaoArea.style.animation = "fadeOut 1s";
-    carlaoArea.style.display = "none";
-  }, 2000);
-}
-
-function verificaPontoVirgula(elemento) {
-  const carlaoTexto = document.getElementById("carlaoTexto");
-  var pos = elemento.value;
-
-
-  if (pos != -1) {
-    if (elemento.includes(";")) {
-      ativaAnimacao();
-      carlaoTexto.innerHTML = "O valor possui ;";
-      return false;
-    } else if (elemento.includes(",")) {
-      ativaAnimacao();
-      carlaoTexto.innerHTML = "O valor possui ,";
-      return false;
-    } else if (elemento.includes(".")) {
-      ativaAnimacao();
-      carlaoTexto.innerHTML = "O valor possui .";
-      return false;
-    } else if (elemento.includes("~")) {
-      ativaAnimacao();
-      carlaoTexto.innerHTML = "O valor possui ~";
-      return false;
-    } else if (elemento.includes("^")) {
-      ativaAnimacao();
-      carlaoTexto.innerHTML = "O valor possui ^";
-      return false;
-    } else if (elemento.includes("#")) {
-      ativaAnimacao();
-      carlaoTexto.innerHTML = "O valor possui #";
-      return false;
-    } else if (elemento.includes("$")) {
-      ativaAnimacao();
-      carlaoTexto.innerHTML = "O valor possui $";
+  estouroPilha(tipo) {
+    if (tipo === "push" && this.qtdElementos === 10) {
+      this.ativaAnimacao();
+      carlaoTexto.innerHTML = "A pilha está cheia!!";
       return false;
     }
-  } 
-  return true;
-}
+    if (tipo === "pop" && this.qtdElementos === 0) {
+      this.ativaAnimacao();
+      carlaoTexto.innerHTML = "A pilha está vazia!!";
+      return false;
+    }
+    return true;
+  }
 
-function pushElemento(elemento) {
-  if (estouro_pilha(qtdElementos, "push")) {
-    if (verificaPontoVirgula(elemento)) {
-      if (qtdElementos == 0) {
-        formPilha.pilha.value = elemento;
-      } else {
-        formPilha.pilha.value += ";" + elemento;
+  ativaAnimacao() {
+    const carlaoArea = document.querySelector(".carlaoAlerta");
+    carlaoArea.style.display = "flex";
+    setTimeout(() => {
+      carlaoArea.style.animation = "fadeOut 1s";
+      carlaoArea.style.display = "none";
+    }, 2000);
+  }
+
+  verificaPontoVirgula(elemento) {
+    var pos = elemento.value;
+    if (elemento.trim() === "") {
+      this.ativaAnimacao();
+        carlaoTexto.innerHTML = "O valor não pode ser nulo!";
+        return false;
+    }
+  
+    if (pos != -1) {
+      if (elemento.includes(";")) {
+        this.ativaAnimacao();
+        carlaoTexto.innerHTML = "O valor possui ;";
+        return false;
+      } else if (elemento.includes("~")) {
+        this.ativaAnimacao();
+        carlaoTexto.innerHTML = "O valor possui ~";
+        return false;
+      } else if (elemento.includes("^")) {
+        this.ativaAnimacao();
+        carlaoTexto.innerHTML = "O valor possui ^";
+        return false;
+      } else if (elemento.includes("#")) {
+        this.ativaAnimacao();
+        carlaoTexto.innerHTML = "O valor possui #";
+        return false;
+      } else if (elemento.includes("$")) {
+        this.ativaAnimacao();
+        carlaoTexto.innerHTML = "O valor possui $";
+        return false;
       }
-      qtdElementos += 1;
+    } 
+    return true;
+  }
+
+  pushElemento(elemento) {
+    if (this.estouroPilha("push")) {
+      if (this.verificaPontoVirgula(elemento)) {
+        this.elementos.push(elemento);
+        this.qtdElementos += 1;
+      }
+    }
+    this.mostrarPilha();
+  }
+
+  popElemento() {
+    if (this.estouroPilha("pop")) {
+      const elementoRemovido = this.elementos.pop();
+      this.qtdElementos -= 1;
+
+      const divElementoRemovido = document.createElement("div");
+      divElementoRemovido.textContent = elementoRemovido;
+      divElementoRemovido.classList.add("item-removido");
+      document.body.appendChild(divElementoRemovido);
+
+      const alturaInicial = window.scrollY;
+      const alturaFinal = alturaInicial + 100; 
+      let posicaoAtual = alturaInicial;
+
+      const animacaoQueda = () => {
+        posicaoAtual += 2; 
+        if (posicaoAtual < alturaFinal) {
+          divElementoRemovido.style.transform = `translateY(${posicaoAtual}px)`;
+          requestAnimationFrame(animacaoQueda);
+        } else {
+          document.body.removeChild(divElementoRemovido);
+          this.mostrarPilha();
+        }
+      };
+
+      animacaoQueda();
     }
   }
-  mostrarPilha();
-}
 
-function popElemento() {
-  if (estouro_pilha(qtdElementos, "pop")) {
-    var str = formPilha.pilha.value;
-    var pilha = str.split(";");
+  mostrarPilha() {
+    const str = this.elementos.join(";");
+    let retorno = `A quantidade de elementos da pilha é: ${this.qtdElementos}<br><table width='500' border='0' class='tabela'>
+      <tr style='border-radius: 10px;'>
+        <td width='104'>Posi&ccedil;&atilde;o</td>`;
+    
+    for (let i = 1; i <= 10; i++) {
+      retorno += `<td width='35'><div align='center'><strong>${i}</strong></div></td>`;
+    }
+    
+    retorno += `</tr><tr><td>Elemento</td>`;
 
-    formPilha.elemento.value = " ";
-    for (index = 0; index < pilha.length - 1; index++) {
-      if (index == 0) {
-        formPilha.pilha.value = pilha[index];
-      } else {
-        formPilha.pilha.value += ";" + pilha[index];
+    if (str !== "") {
+      const pilha = str.split(";");
+      let posicao;  
+      if (this.qtdElementos > 0) {
+        for (let index = 0; index < pilha.length; index++) {
+          posicao = index + 1;
+          retorno += `<td><div align='center'>${pilha[index]}</div></td>`;
+        }
+        while (posicao < 10) {
+          retorno += `<td><div align='center'></div></td>`;
+          posicao += 1;
+        }
       }
     }
-    qtdElementos -= 1;
-
-    // Crie uma div para o elemento removido
-    const elementoRemovido = document.createElement("div");
-    elementoRemovido.textContent = pilha[pilha.length - 1]; // Último elemento da pilha
-    elementoRemovido.classList.add("item-removido");
-    document.body.appendChild(elementoRemovido);
-
-    // Animação de queda
-    const alturaInicial = window.scrollY;
-    const alturaFinal = alturaInicial + 100; // Altura de queda (ajuste conforme necessário)
-    let posicaoAtual = alturaInicial;
-
-    function animacaoQueda() {
-      posicaoAtual += 2; // Velocidade de queda (ajuste conforme necessário)
-      if (posicaoAtual < alturaFinal) {
-        elementoRemovido.style.transform = `translateY(${posicaoAtual}px)`;
-        requestAnimationFrame(animacaoQueda);
-      } else {
-        // Remova a div após a queda
-        document.body.removeChild(elementoRemovido);
-        mostrarPilha();
-      }
-    }
-
-    animacaoQueda();
-  }
-}
-
-function mostrarPilha() {
-  var str = formPilha.pilha.value;
-  var retorno = "A quantidade de elementos da pilha é: " + qtdElementos;
-  retorno += "<br><table width='500' border='0' class='tabela'>";
-  retorno +=
-    "<tr style='border-radius: 10px;'><td width='104'>Posi&ccedil;&atilde;o</td>";
-  for (i = 1; i <= 10; i++) {
-    retorno +=
-      "<td width='35'><div align='center'><strong>" +
-      i +
-      "</strong></div></td>";
-  }
-  retorno += "</tr><tr><td>Elemento</td>";
-
-  if (str != "") {
-    var pilha = str.split(";");
-    if (qtdElementos > 0) {
-      for (index = 0; index < pilha.length; index++) {
-        posicao = index + 1;
-        retorno += "<td><div align='center'>";
-        retorno += "" + pilha[index] + "</div></td>";
-      }
-      while (posicao < 10) {
-        retorno += "<td><div align='center'></div></td>";
-        posicao += 1;
-      }
-    }
-    retorno += "</tr></table>";
+    
+    retorno += `</tr></table>`;
     document.getElementById("conteudo").innerHTML = retorno;
   }
-  setarCampo();
 }
+
+
+const minhaPilha = new Pilha();
+minhaPilha.mostrarPilha();
