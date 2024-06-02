@@ -9,25 +9,31 @@
 </head>
 <body>
     <header>
-        <h1> Pilha 2 </h1>
+        <h1>Pilha Vittor</h1>
     </header>
+   
     <main class="container">
-        
+        <form name="formPilha" method="post" action="">
 
-		<form name="formPilha" method="post" action="">
+            <input type="hidden" name="pilha">
+    
+            <input type="text" name="elemento" id="elemento">
+    
+            <input type="button" name="Inserir" value="Adicionar na pilha"
+                onClick="pushElemento(document.getElementById('elemento').value);">
+            <input type="button" name="Retirar" 
+                value="Tirar da pilha" onClick="popElemento();">
+                
+        </form>
 
-			<input type="hidden" name="pilha">
-
-			<input type="text" name="elemento" id="elemento">
-
-			<input type="button" name="Inserir" value="Adicionar na pilha"
-				onClick="pushElemento(document.getElementById('elemento').value);">
-			<input type="button" name="Retirar" 
-				value="Tirar da pilha" onClick="popElemento();">
-				
-		</form>
         <div id="conteudo" class="conteudo">
 		</div>
     </main>
+
+
+    <div class="carlaoAlerta">
+        <p id="carlaoTexto"></p>
+        <img style="border: 2px solid #000" src="carlao.JPG" alt="">
+    </div>
 </body>
 </html>
